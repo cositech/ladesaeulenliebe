@@ -3,6 +3,7 @@ const loveMessage = document.querySelector('#loveMessage');
 const chargeStatus = document.querySelector('#chargeStatus');
 const sparkButton = document.querySelector('#sparkButton');
 const sparkLayer = document.querySelector('#sparkLayer');
+const hotspots = document.querySelectorAll('.hotspot');
 
 function burst(x, y, amount = 14) {
   const symbols = ['♥', '⚡', '♡'];
@@ -46,4 +47,13 @@ sparkButton.addEventListener('click', (event) => {
   const rect = event.currentTarget.getBoundingClientRect();
   burst(rect.left + rect.width / 2, rect.top + rect.height / 2, 24);
   chargeStatus.textContent = 'Systemstatus: maximale Spannung';
+});
+
+hotspots.forEach((hotspot) => {
+  hotspot.addEventListener('click', (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    loveMessage.textContent = event.currentTarget.dataset.message;
+    chargeStatus.textContent = 'Grafik-Hotspot erfolgreich geladen';
+    burst(rect.left + rect.width / 2, rect.top + rect.height / 2, 18);
+  });
 });
