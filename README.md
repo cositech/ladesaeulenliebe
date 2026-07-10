@@ -1,74 +1,59 @@
 # Meine große Liebe: Ladesäulen
 
-Humorvolle Microsite als React/Vite-Anwendung auf Cloudflare Workers.
+Humorvolle Microsite für Cloudflare Workers. Die Seite greift die zentralen Elemente der Grafik auf: Neon-Schrift, Ladesäulen mit Gesichtern, Herzschild, Notizzettel, Checkliste, Kaffeetasse und elektrische Liebeserklärungen.
 
-## Funktionen
+## Sicherheits- und Abhängigkeitsmodell
 
-- responsive Landingpage
-- vollständig lokale Illustration ohne externe Bildquelle
-- zufällige Liebeserklärungen über `/api/message`
-- Health-Endpunkt unter `/api/health`
-- Hono-Worker und Vite-Frontend in einem Deployment
-- keine externen Fonts, Bilder oder CDN-Abhängigkeiten
-
-## Lokal testen
+Das Projekt benötigt keine installierten Runtime- oder Build-Abhängigkeiten. Dadurch enthält der Lockfile keine Drittanbieterpakete und `npm audit` sollte keine bekannten Abhängigkeitsschwachstellen melden.
 
 ```bash
 npm install
-npm run dev
-```
-
-Die Entwicklungsumgebung ist anschließend normalerweise unter `http://localhost:5173` erreichbar.
-
-## Technische Prüfung
-
-```bash
+npm audit
 npm run check
 ```
 
-Der Befehl führt TypeScript-Prüfung, Vite-Build und einen Wrangler-Dry-Run aus.
+## Lokal starten
 
-## Manuell deployen
+Wrangler wird bei Bedarf in der jeweils aktuellen Version über `npx` geladen:
 
 ```bash
-npm install
-npx wrangler login
+npm run dev
+```
+
+## Deployment
+
+```bash
 npm run deploy
 ```
 
-## Direkt aus GitHub in Cloudflare importieren
-
-1. In Cloudflare **Workers & Pages** öffnen.
-2. **Create application** bzw. **Import a repository** auswählen.
-3. Das Repository `cositech/ladesaeulenliebe` verbinden.
-4. Als Produktionsbranch `main` verwenden.
-5. Build command:
+Für einen GitHub-basierten Cloudflare-Import:
 
 ```text
-npm run build
+Production branch: main
+Build command: npm run build
+Deploy command: npm run deploy
 ```
 
-6. Deploy command:
+## Worker-Endpunkte
 
 ```text
-npx wrangler deploy
+GET /api/health
+GET /api/message
 ```
 
-Die Worker-Konfiguration befindet sich in `wrangler.json` und veröffentlicht die von Vite erzeugten Dateien aus `dist/client`.
+## Projektstruktur
 
-## API testen
-
-```bash
-curl -fsS https://DEIN-WORKER.workers.dev/api/health
-curl -fsS https://DEIN-WORKER.workers.dev/api/message
+```text
+.
+├── package.json
+├── package-lock.json
+├── wrangler.jsonc
+├── worker/
+│   └── index.js
+└── public/
+    ├── index.html
+    ├── style.css
+    └── script.js
 ```
 
-Erwartete Health-Antwort:
-
-```json
-{
-  "status": "ok",
-  "service": "ladesaeulenliebe",
-  "timestamp": "2026-07-11T00:00:00.000Z"
-}
-```
+Die alten Template-Dateien unter `src/` werden nicht mehr gebaut oder ausgeliefert und können bei Bedarf später vollständig entfernt werden.
