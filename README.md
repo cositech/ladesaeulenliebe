@@ -1,90 +1,74 @@
-# React + Vite + Hono + Cloudflare Workers
+# Meine große Liebe: Ladesäulen
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/vite-react-template)
+Humorvolle Microsite als React/Vite-Anwendung auf Cloudflare Workers.
 
-This template provides a minimal setup for building a React application with TypeScript and Vite, designed to run on Cloudflare Workers. It features hot module replacement, ESLint integration, and the flexibility of Workers deployments.
+## Funktionen
 
-![React + TypeScript + Vite + Cloudflare Workers](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)
+- responsive Landingpage
+- vollständig lokale Illustration ohne externe Bildquelle
+- zufällige Liebeserklärungen über `/api/message`
+- Health-Endpunkt unter `/api/health`
+- Hono-Worker und Vite-Frontend in einem Deployment
+- keine externen Fonts, Bilder oder CDN-Abhängigkeiten
 
-<!-- dash-content-start -->
-
-🚀 Supercharge your web development with this powerful stack:
-
-- [**React**](https://react.dev/) - A modern UI library for building interactive interfaces
-- [**Vite**](https://vite.dev/) - Lightning-fast build tooling and development server
-- [**Hono**](https://hono.dev/) - Ultralight, modern backend framework
-- [**Cloudflare Workers**](https://developers.cloudflare.com/workers/) - Edge computing platform for global deployment
-
-### ✨ Key Features
-
-- 🔥 Hot Module Replacement (HMR) for rapid development
-- 📦 TypeScript support out of the box
-- 🛠️ ESLint configuration included
-- ⚡ Zero-config deployment to Cloudflare's global network
-- 🎯 API routes with Hono's elegant routing
-- 🔄 Full-stack development setup
-- 🔎 Built-in Observability to monitor your Worker
-
-Get started in minutes with local development or deploy directly via the Cloudflare dashboard. Perfect for building modern, performant web applications at the edge.
-
-<!-- dash-content-end -->
-
-## Getting Started
-
-To start a new project with this template, run:
-
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/vite-react-template
-```
-
-A live deployment of this template is available at:
-[https://react-vite-template.templates.workers.dev](https://react-vite-template.templates.workers.dev)
-
-## Development
-
-Install dependencies:
+## Lokal testen
 
 ```bash
 npm install
-```
-
-Start the development server with:
-
-```bash
 npm run dev
 ```
 
-Your application will be available at [http://localhost:5173](http://localhost:5173).
+Die Entwicklungsumgebung ist anschließend normalerweise unter `http://localhost:5173` erreichbar.
 
-## Production
-
-Build your project for production:
+## Technische Prüfung
 
 ```bash
+npm run check
+```
+
+Der Befehl führt TypeScript-Prüfung, Vite-Build und einen Wrangler-Dry-Run aus.
+
+## Manuell deployen
+
+```bash
+npm install
+npx wrangler login
+npm run deploy
+```
+
+## Direkt aus GitHub in Cloudflare importieren
+
+1. In Cloudflare **Workers & Pages** öffnen.
+2. **Create application** bzw. **Import a repository** auswählen.
+3. Das Repository `cositech/ladesaeulenliebe` verbinden.
+4. Als Produktionsbranch `main` verwenden.
+5. Build command:
+
+```text
 npm run build
 ```
 
-Preview your build locally:
+6. Deploy command:
 
-```bash
-npm run preview
+```text
+npx wrangler deploy
 ```
 
-Deploy your project to Cloudflare Workers:
+Die Worker-Konfiguration befindet sich in `wrangler.json` und veröffentlicht die von Vite erzeugten Dateien aus `dist/client`.
+
+## API testen
 
 ```bash
-npm run build && npm run deploy
+curl -fsS https://DEIN-WORKER.workers.dev/api/health
+curl -fsS https://DEIN-WORKER.workers.dev/api/message
 ```
 
-Monitor your workers:
+Erwartete Health-Antwort:
 
-```bash
-npx wrangler tail
+```json
+{
+  "status": "ok",
+  "service": "ladesaeulenliebe",
+  "timestamp": "2026-07-11T00:00:00.000Z"
+}
 ```
-
-## Additional Resources
-
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Vite Documentation](https://vitejs.dev/guide/)
-- [React Documentation](https://reactjs.org/)
-- [Hono Documentation](https://hono.dev/)
